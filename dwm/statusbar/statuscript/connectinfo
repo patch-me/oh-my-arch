@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Function to format data size
+format_size() {
+    local size=$1
+    local units=("B" "KB" "MB" "GB" "TB")
+    local unit=""
+
+    for unit in "${units[@]}"; do
+        if ((size < 1024)); then
+            break
+        fi
+        ((size /= 1024))
+    done
+
+    echo "$size $unit"
+}
+
+# Network interface (replace with your actual interface)
+interface="wlp3s0"
+
+# Function to get upload and download speeds
+get_network_stats() {
+    ifstat "$interface" 1 1 | tail -n 1
+}
+
+# Function to extract upload and download speeds
+extract_speeds() {
+    local network_stats="$1"
+    local upload_speed=$(echo "$network_stats" | awk '{printf "%.0f", $1}')
+    local download_speed=$(echo "$network_stats" | awk '{printf "%.0f", $2}')
+
+    echo "$upload_speed $download_speed"
+}
+
+# Main function to display widget
+display_widget() {
+    local network_stats=$(get_network_stats)
+    local speeds=$(extract_speeds "$network_stats")
+
+    # Icons
+    upload_icon="⬆️"
+    download_icon="⬇️"
+
+    # Format sizes
+    upload_size=$(format_size "$(echo "$speeds" | cut -d' ' -f1)")
+    download_size=$(format_size "$(echo "$speeds" | cut -d' ' -f2)")
+
+    # Display information
+    printf "%s %s  %s %s\\n" "$upload_icon" "$upload_size" "$download_icon" "$download_size"
+}
+
+# Run the main function to display the widget
+display_widget

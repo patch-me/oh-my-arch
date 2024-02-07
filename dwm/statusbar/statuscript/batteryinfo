@@ -1,0 +1,35 @@
+#!/bin/bash
+
+print_battery_status() {
+    local battery_status=$1
+    local charging_indicator=""
+    local battery_icon=""
+    
+    # Check if the computer is Charging
+    if [[ $battery_status == *"Charging,"* ]] || [[ $battery_status == *"Full,"* ]]; then
+        charging_indicator="⚡"
+    fi
+
+    # Extract battery percentage
+    local battery_percentage=$(echo "$battery_status" | awk -F ', ' '{print $2}' | tr -d '%')
+
+    # Which icon
+    if ((battery_percentage >= 70)); then
+        battery_icon="🟢"  # Icône verte pour plus de 80%
+    elif ((battery_percentage >= 30)); then
+        battery_icon="🟡"  # Icône jaune entre 50% et 79%
+    elif ((battery_percentage >= 10)); then
+        battery_icon="🔴"  # Icône rouge entre 20% et 49%
+    else
+        battery_icon="⚫"  # Icône noire pour moins de 20%
+    fi
+
+    #display result
+    echo -e "$battery_percentage% $charging_indicator$battery_icon"
+}
+
+battery_status=$(acpi)
+#echo "$battery_status"
+# Display battery status
+print_battery_status "$battery_status"
+

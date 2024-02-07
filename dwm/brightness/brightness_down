@@ -1,0 +1,10 @@
+#!/bin/bash
+# Diminue la luminosité de tous les écrans connectés
+for output in $(xrandr | grep " connected" | cut -d ' ' -f1); do
+    brightness=$(xrandr --verbose | grep -m 1 "Brightness" | cut -d ' ' -f2)
+    new_brightness=$(echo "$brightness - 0.1" | bc)
+    if (( $(echo "$new_brightness < 0.3" | bc -l) )); then
+        new_brightness=0.3
+    fi
+    xrandr --output $output --brightness $new_brightness
+done
