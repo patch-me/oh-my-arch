@@ -39,7 +39,7 @@ static const Rule rules[] = {
 static const float mfact = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster = 1;    /* number of clients in master area */
 static const int resizehints =
-    1; /* 1 means respect size hints in tiled resizals */
+    0; /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen =
     1; /* 1 will force focus on the fullscreen window */
 
@@ -71,6 +71,7 @@ static const char *dmenucmd[] = {
     "dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1,
     "-nf",       col_gray3, "-sb",    col_cyan, "-sf",     col_gray4, NULL};
 static const char *termcmd[] = {"st", NULL};
+static const char *firefox[] = {"firefox", NULL};
 static const char *flameshot[] = {"flame_gui", NULL};
 static const char *clipmd[] = {"clipmenu", "-i", "-fn", dmenufont, NULL};
 static const char *urlcmd[] = {"clipmenu-url", NULL};
@@ -82,6 +83,7 @@ static const Key keys[] = {
     {MODKEY, XK_p, spawn, {.v = dmenucmd}},
     {MODKEY | ShiftMask, XK_p, spawn, {.v = flameshot}},
     {MODKEY | ShiftMask, XK_Return, spawn, {.v = termcmd}},
+    {MODKEY, XK_b, spawn, {.v = firefox}},
     {MODKEY, XK_c, spawn, {.v = clipmd}},
     {MODKEY, XK_u, spawn, {.v = urlcmd}},
     {MODKEY, XK_b, togglebar, {0}},
