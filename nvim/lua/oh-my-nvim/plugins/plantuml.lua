@@ -7,8 +7,7 @@ return {
         config = function()
             vim.g.preview_uml_url = 'http://localhost:8888'
         end
-    }
-    -- {
+    },
     --     'javiorfo/nvim-soil',
     --     lazy = true,
     --     ft = "plantuml",
